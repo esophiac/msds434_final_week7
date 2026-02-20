@@ -29,7 +29,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	client, err := bigquery.NewClient(ctx, projectID)
 	if err != nil {
 		log.Printf("Failed to create BigQuery client: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, "Internal Server Error - Failed to create Bigquery client", http.StatusInternalServerError)
 		return
 	}
 	defer client.Close()
@@ -40,7 +40,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	it, err := query.Read(ctx)
 	if err != nil {
 		log.Printf("Failed to run query: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, "Internal Server Error - failted to run query", http.StatusInternalServerError)
 		return
 	}
 
@@ -53,7 +53,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 		if err != nil {
 			log.Printf("Failed to iterate results: %v", err)
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, "Internal Server Error - failed to iterate results", http.StatusInternalServerError)
 			return
 		}
 		fmt.Fprintf(w, "Precision: %v\nRecall: %v\nAccuracy: %v\nF1_score: %v, Log_loss: %v\nROC AUC: %v", item.Precision, item.Recall, item.Accuracy, item.F1score, item.Logloss, item.Rocauc)
