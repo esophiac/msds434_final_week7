@@ -25,8 +25,10 @@ type Item struct {
 func handler(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT") // Cloud Run provides this env var
+	location := "us-east4"
 
 	client, err := bigquery.NewClient(ctx, projectID)
+
 	if err != nil {
 		log.Printf("Failed to create BigQuery client: %v", err)
 		http.Error(w, "Internal Server Error - Failed to create Bigquery client", http.StatusInternalServerError)
@@ -35,12 +37,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	defer client.Close()
 
 	query := client.Query("SELECT * FROM ML.EVALUATE(MODEL final434.imdbmodel.logistic_reg_classifier)")
+	query.Location = location
 
 	// Run the query
 	it, err := query.Read(ctx)
 	if err != nil {
 		log.Printf("Failed to run query: %v", err)
-		http.Error(w, "Internal Server Error - failted to run query", http.StatusInternalServerError)
+		http.Error(w, "Internal Server Error - failed to run query", http.StatusInternalServerError)
 		return
 	}
 
