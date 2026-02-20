@@ -24,7 +24,8 @@ type Item struct {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT") // Cloud Run provides this env var
+	// projectID := os.Getenv("GOOGLE_CLOUD_PROJECT") // Cloud Run provides this env var
+	projectID := "final434" // Cloud Run provides this env var
 	location := "us-east4"
 
 	client, err := bigquery.NewClient(ctx, projectID)
