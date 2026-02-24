@@ -37,7 +37,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer client.Close()
 
-	query := client.Query("SELECT * FROM ML.EVALUATE(MODEL final434.imdbmodel.logistic_reg_classifier)")
+	// replace model name where necessary
+	query := client.Query("SELECT * FROM ML.EVALUATE(MODEL modelname)")
 	query.Location = location
 
 	// Run the query
